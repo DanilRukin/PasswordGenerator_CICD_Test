@@ -37,6 +37,30 @@ namespace PasswordGeneratorCICD.IntegrationTests.ApiControllers
             Assert.Equal(options.Length, result.Length);
         }
 
+        [Fact]
+        public async Task CreatePassword_InavalidOptions_ReturnsBadRequestStatusCodeWithMessage()
+        {
+            PasswordOptionsDto options = new()
+            {
+                Length = 4,
+                CountOfCharacters = 5,
+                CountOfNumbers = 3,
+                LowerCaseOnly = false,
+                UpperCaseOnly = false
+            };
+            
+            string message = $"It is not possible to set the length ({options.Length}) less than the sum of the" +
+                    $" number of digits ({options.CountOfNumbers}), the number of characters ({options.CountOfCharacters}) and" +
+                    $" the number of special characters ({(options.SpecialSymbols == null ? 0 : options.SpecialSymbols.Count)})";
+            var response = await _httpClient.PostAsJsonAsync(Post.CreatePassword(), options);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<string>>();
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal(message, result.First());
+        }
+
         private static class Post
         {
             internal static string CreatePassword() => $"{_api}";
