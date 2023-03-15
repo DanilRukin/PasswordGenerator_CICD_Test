@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PasswordGeneratorCICD.IntegrationTests.ApiControllers
 {
-    public class PasswordGeneratorControllerTests
+    public class PasswordGeneratorControllerTests : IClassFixture<CustomWebApplicationFactory<WebMarker>>
     {
         private HttpClient _httpClient;
         private CustomWebApplicationFactory<WebMarker> _factory;
