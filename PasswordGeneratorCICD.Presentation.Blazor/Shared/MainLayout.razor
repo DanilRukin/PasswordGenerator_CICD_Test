@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="_mudTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -8,12 +8,16 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" />
+        <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label="Темный/Светлый режим" />
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
         <MudDrawerHeader>
-            <MudText Typo="Typo.h6">PasswordGeneratorCICD.Presentation.Blazor</MudText>
+            <MudText Typo="Typo.h6" Align="Align.Center">
+                Генератор паролей
+                <MudText Typo="Typo.h6">
+                    с блэкджеком и шлюхами
+                </MudText>
+            </MudText>
         </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
@@ -26,7 +30,8 @@
 
 @code {
     bool _drawerOpen = true;
-
+    private bool _isDarkMode;
+    private MudTheme _mudTheme = new MudTheme();
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;

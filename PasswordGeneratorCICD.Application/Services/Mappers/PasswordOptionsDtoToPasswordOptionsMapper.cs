@@ -21,8 +21,7 @@ namespace PasswordGeneratorCICD.Application.Services.Mappers
             options.SetCountOfCharacters(source.CountOfCharacters);
             options.SetCountOfNumbers(source.CountOfNumbers);
             options.SetLowerCase(source.LowerCaseOnly);
-            options.SetUpperCase(source.UpperCaseOnly);
-            options.ClearSpecialSymbols();          
+            options.SetUpperCase(source.UpperCaseOnly);        
             options.SetLength(source.Length);
             return options;
         }
