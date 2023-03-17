@@ -7,7 +7,7 @@ on:
 
 
 env:
-    DOTNET_VERSION: 6.0.x
+    DOTNET_VERSION: '6.0.x'
     CONFIGURATION: Release
     OUTPUT: release
     PROJECT_NAME: PasswordGeneratorCICD.Presentation.Blazor
