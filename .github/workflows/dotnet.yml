@@ -10,7 +10,7 @@ env:
     DOTNET_VERSION: '6.0.x'
     CONFIGURATION: Release
     OUTPUT: release
-    PROJECT_NAME: PasswordGeneratorCICD.Presentation.Blazor
+    PROJECT_NAME: PasswordGeneratorCICD.Presentation.Blazor.csproj
     SOLUTION_NAME: PasswordGeneratorCICD
     REPOSITORY_NAME: PasswordGenerator_CICD_Test
 
@@ -36,7 +36,7 @@ jobs:
     needs: build
     steps:
     - name: Publish
-      run: dotnet publish ${{ env.SOLUTION_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
+      run: dotnet publish ${{ env.PROJECT_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
 
   deploy:
     runs-on: windows-latest
