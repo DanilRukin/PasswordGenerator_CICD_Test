@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
+using PasswordGeneratorCICD.Application;
+using PasswordGeneratorCICD.Application.Dtos;
+using PasswordGeneratorCICD.Application.Services.Interfaces;
 using PasswordGeneratorCICD.Presentation.Blazor;
-using PasswordGeneratorCICD.Presentation.Blazor.Dtos;
-using PasswordGeneratorCICD.Presentation.Blazor.Services.Interfaces;
 using PasswordGeneratorCICD.Presentation.Blazor.Services.Mappers;
 using PasswordGeneratorCICD.Presentation.Blazor.ViewModels;
 
@@ -31,8 +32,7 @@ builder.Services.AddMudServices(config =>
     config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
 });
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Marker).Assembly));
-builder.Services.AddScoped<IMapper<PasswordOptionsDto, PasswordOptionsViewModel>, PasswordOptionsDtoToPasswordOptionsViewModel>();
+builder.Services.AddApplicationServices();
 builder.Services.AddScoped<IMapper<PasswordOptionsViewModel, PasswordOptionsDto>, PasswordOptionsViewModelToPasswordOptionsDtoMapper>();
 
 await builder.Build().RunAsync();

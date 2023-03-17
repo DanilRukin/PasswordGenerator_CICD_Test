@@ -3,8 +3,15 @@ name: Dotnet
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "blazor"]
 
+
+env:
+    DOTNET_VERSION: 6.0.x
+    CONFIGURATION: Release
+    OUTPUT: release
+    PROJECT_NAME: PasswordGeneratorCICD.Presentation.Blazor
+    REPOSITORY_NAME: PasswordGenerator_CICD_Test
 
 
 jobs:
@@ -15,10 +22,39 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env:DOTNET_VERSION }}
       - name: Restore dependecies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+
+  publish:
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Publish
+      run: dotnet publish --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
+
+  deploy:
+    runs-on: windows-latest
+    needs: [build, publish]
+    steps:
+    - name: Change base-tag in index.html from / to PasswordGenerator_CICD_Test
+      run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.REPOSITORY_NAME }}\/" \/>/g' ${{ env.OUTPUT }}/wwwroot/index.html
+
+    - name: copy index.html to 404.html
+      run: cp ${{ env.OUTPUT }}/wwwroot/index.html ${{ env.OUTPUT }}/wwwroot/404.html
+
+    - name: Add .nojekyll file
+      run: touch ${{ env.OUTPUT }}/wwwroot/.nojekyll
+
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        branch: blazor
+        FOLDER: ${{ env.OUTPUT }}/wwwroot
+
+    

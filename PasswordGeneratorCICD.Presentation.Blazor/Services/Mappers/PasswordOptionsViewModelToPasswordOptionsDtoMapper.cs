@@ -1,5 +1,5 @@
-﻿using PasswordGeneratorCICD.Presentation.Blazor.Dtos;
-using PasswordGeneratorCICD.Presentation.Blazor.Services.Interfaces;
+﻿using PasswordGeneratorCICD.Application.Dtos;
+using PasswordGeneratorCICD.Application.Services.Interfaces;
 using PasswordGeneratorCICD.Presentation.Blazor.ViewModels;
 
 namespace PasswordGeneratorCICD.Presentation.Blazor.Services.Mappers

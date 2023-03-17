@@ -2,9 +2,9 @@
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using MediatR
-@using PasswordGeneratorCICD.Presentation.Blazor.Dtos
-@using PasswordGeneratorCICD.Presentation.Blazor.Infrastructure.PasswordGenerator.Commands
-@using PasswordGeneratorCICD.Presentation.Blazor.Services.Interfaces
+@using PasswordGeneratorCICD.Application.Dtos;
+@using PasswordGeneratorCICD.Application.PasswordGenerator.Commands;
+@using PasswordGeneratorCICD.Application.Services.Interfaces;
 @using PasswordGeneratorCICD.Presentation.Blazor.ViewModels
 @using System.Text
 
@@ -14,7 +14,7 @@
 @inject IMapper<PasswordOptionsViewModel, PasswordOptionsDto> ViewModelToDtoMapper
 
 <PageTitle>Генератор</PageTitle>
-<MudText Typo="Typo.h3" GutterBottom="true">Генератор паролей с блэкджеком и шлюхами</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Генератор паролей с блэкджеком и шл...&#128518;</MudText>
 
 <MudPaper Class="pa-4">
     <MudForm>
@@ -61,7 +61,7 @@
 
     private async Task Generate()
     {
-        GeneratePasswordCommand command = new(ViewModelToDtoMapper.Map(Model));
+        CreatePasswordCommand command = new(ViewModelToDtoMapper.Map(Model));
         var response = await Mediator.Send(command);
         if (response.IsSuccess)
         {
