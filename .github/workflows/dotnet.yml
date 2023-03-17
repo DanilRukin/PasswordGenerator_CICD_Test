@@ -16,7 +16,7 @@ env:
 
 
 jobs:
-  build:
+  build-publis-deploy:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -30,32 +30,22 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+      - name: Publish
+        run: dotnet publish ${{ env.PROJECT_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
+      - name: Change base-tag in index.html from / to PasswordGenerator_CICD_Test
+        run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.REPOSITORY_NAME }}\/" \/>/g' ${{ env.OUTPUT }}/wwwroot/index.html
 
-  publish:
-    runs-on: windows-latest
-    needs: build
-    steps:
-    - name: Publish
-      run: dotnet publish ${{ env.PROJECT_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
+      - name: copy index.html to 404.html
+        run: cp ${{ env.OUTPUT }}/wwwroot/index.html ${{ env.OUTPUT }}/wwwroot/404.html
 
-  deploy:
-    runs-on: windows-latest
-    needs: [build, publish]
-    steps:
-    - name: Change base-tag in index.html from / to PasswordGenerator_CICD_Test
-      run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.REPOSITORY_NAME }}\/" \/>/g' ${{ env.OUTPUT }}/wwwroot/index.html
+      - name: Add .nojekyll file
+        run: touch ${{ env.OUTPUT }}/wwwroot/.nojekyll
 
-    - name: copy index.html to 404.html
-      run: cp ${{ env.OUTPUT }}/wwwroot/index.html ${{ env.OUTPUT }}/wwwroot/404.html
-
-    - name: Add .nojekyll file
-      run: touch ${{ env.OUTPUT }}/wwwroot/.nojekyll
-
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        branch: blazor
-        FOLDER: ${{ env.OUTPUT }}/wwwroot
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         branch: blazor
+         FOLDER: ${{ env.OUTPUT }}/wwwroot
 
     
