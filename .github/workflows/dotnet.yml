@@ -19,7 +19,7 @@ env:
 
 
 jobs:
-  build-publis-deploy:
+  build-publish-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
