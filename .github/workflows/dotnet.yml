@@ -11,7 +11,7 @@ env:
     CONFIGURATION: Release
     OUTPUT: release
     PROJECT_NAME: PasswordGeneratorCICD.Presentation.Blazor.csproj
-    SOLUTION_NAME: PasswordGeneratorCICD
+    SOLUTION_NAME: PasswordGeneratorCICD.sln
     REPOSITORY_NAME: PasswordGenerator_CICD_Test
 
 
@@ -31,7 +31,7 @@ jobs:
       - name: Test
         run: dotnet test --no-build --verbosity normal
       - name: Publish
-        run: dotnet publish ${{ env.PROJECT_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
+        run: dotnet publish ${{ env.SOLUTION_NAME }} --configuration ${{ env.CONFIGURATION }} --output ${{ env.OUTPUT }}
       - name: Change base-tag in index.html from / to PasswordGenerator_CICD_Test
         run: sed -i 's/<base href="\/" \/>/<base href="\/${{ env.REPOSITORY_NAME }}\/" \/>/g' ${{ env.OUTPUT }}/wwwroot/index.html
 
