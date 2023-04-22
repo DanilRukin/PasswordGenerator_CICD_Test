@@ -14,7 +14,7 @@
 @inject IMapper<PasswordOptionsViewModel, PasswordOptionsDto> ViewModelToDtoMapper
 
 <PageTitle>Генератор паролей</PageTitle>
-<MudText Typo="Typo.h3" GutterBottom="true">Password generator with blackjack and hookers&#128518;</MudText>
+<MudText Typo="Typo.h3" GutterBottom="true">Генератор паролей</MudText>
 
 <MudPaper Class="pa-4">
     <MudForm>
@@ -56,7 +56,11 @@
 </MudPaper>
 
 @code {
-    public PasswordOptionsViewModel Model { get; set; } = new PasswordOptionsViewModel();
+    public PasswordOptionsViewModel Model { get; set; } = new PasswordOptionsViewModel() 
+    { 
+        CountOfCharacters = 1,
+        Length = 1,
+    };
     private string _password = "";
 
     private async Task Generate()
